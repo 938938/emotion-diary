@@ -43,13 +43,34 @@ export const DiaryStateContext = React.createContext();
 //상태관리 로직의 콘텍스트를 만들어서 data state를 컴포넌트 전역에 공급
 export const DiaryDispatchContext = React.createContext();
 
+const dummyData = [ // Home 구현할 때 사용할 더미 데이터
+  {
+    id:1,
+    emotion:1,
+    content:"임시 일기1번",
+    date:1649838278345,
+  },
+  {
+    id:2,
+    emotion:2,
+    content:"임시 일기2번",
+    date:1649838278346,
+  },
+  {
+    id:3,
+    emotion:3,
+    content:"임시 일기3번",
+    date:1649838278347,
+  },
+];
+
 function App() {
 
   // const env = process.env;
   // env.PUBLIC_URL = env.PUBLIC_URL || "";
   // process.env.PUBLIC_URL 사용으로 제대로 이미지가 불러오지 않을 때 사용
 
-  const [data,dispatch] = useReducer(reducer,[]);
+  const [data,dispatch] = useReducer(reducer,dummyData);
   const dataId = useRef(0);
   //CREATE
   const onCreate = (date,content,emotion) =>{
@@ -74,7 +95,6 @@ function App() {
       emotion
     }})
   }
-
 
   return (
     <DiaryStateContext.Provider value={data}>
