@@ -88,7 +88,8 @@ function App() {
   }
   //EDIT
   const onEdit = (targetId,date,content,emotion)=>{
-    dispatch({type:"CREATE",data:{
+    dispatch({type:"EDIT",data:{
+      // type를 CREATE인 채로 수정 안하고 있었어서 수정시 일기 데이터가 새롭게 하나 더 나타나는 오류가 발생했음.
       id:targetId,
       date:new Date(date).getTime(),
       content,
@@ -130,7 +131,7 @@ function App() {
               {/* url경로와 컴포넌트를 매칭, path='/' : 경로가 클래식일 때 element={<Home/} 엘리멘트는 홈이다 */}
               <Route path='/new' element={<New />} />
               {/* http://localhost:3000/new 으로 들어가도 위의 App.js는 그대로 표시. Routes 태그 안의 요소만 변화 */}
-              <Route path='/edit' element={<Edit />} />
+              <Route path='/edit/:id' element={<Edit />} />
               <Route path='/diary/:id' element={<Diary />} />
               {/* id라는 이름으로 뒤의 값을 전달하겠다는 선언. 무조건 /와 id를 갖는다는 선언이기 때문에 /diary로는 경로를 탐색할 수 없음.
                     <Route path='/diary' element={<Diary />} />   ← 이 코드를 넣어 별도 처리를 하면 되지만 일기에 id값이 없는 경우는 없기 때문에 이번에는 생략. */}
