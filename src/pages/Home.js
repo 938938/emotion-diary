@@ -21,7 +21,12 @@ const Home = () =>{
       const lastDay = new Date(
         curDate.getFullYear(),
         curDate.getMonth() + 1,
-        0
+        0,
+        23,
+        59,
+        59
+        // 마지막 날짜는 시간, 분, 초까지 입력을 해줘야 함.
+        // (하지 않으면 마지막 날짜의 일기는 표시되지 않음)
       ).getTime(); // firstday와 lastday를 통해 그 사이에 작성된 일기를 추려낼 수 있음
       setData(diaryList.filter((it)=> it.date >= firstDay && it.date <= lastDay));  
     }

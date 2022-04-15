@@ -1,4 +1,4 @@
-import React,{ useReducer, useRef } from 'react';
+import React,{ useEffect, useReducer, useRef } from 'react';
 import './App.css';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 // 라우터 실행 돔. 이후 <BrowserRouter>태그를 최상위 태그에서 감싸주면 됨.
@@ -36,6 +36,7 @@ const reducer = (state,action) =>{
     default:
       return state;
   }
+  localStorage.setItem('diary',JSON.stringify(newState));
   return newState;
 };
 
@@ -43,26 +44,26 @@ export const DiaryStateContext = React.createContext();
 //상태관리 로직의 콘텍스트를 만들어서 data state를 컴포넌트 전역에 공급
 export const DiaryDispatchContext = React.createContext();
 
-const dummyData = [ // Home 구현할 때 사용할 더미 데이터
-  {
-    id:1,
-    emotion:1,
-    content:"임시 일기1번",
-    date:1649838278345,
-  },
-  {
-    id:2,
-    emotion:2,
-    content:"임시 일기2번",
-    date:1649838278346,
-  },
-  {
-    id:3,
-    emotion:3,
-    content:"임시 일기3번",
-    date:1649838278347,
-  },
-];
+// const dummyData = [ // Home 구현할 때 사용할 더미 데이터
+//   {
+//     id:1,
+//     emotion:1,
+//     content:"임시 일기1번",
+//     date:1649838278345,
+//   },
+//   {
+//     id:2,
+//     emotion:2,
+//     content:"임시 일기2번",
+//     date:1649838278346,
+//   },
+//   {
+//     id:3,
+//     emotion:3,
+//     content:"임시 일기3번",
+//     date:1649838278347,
+//   },
+// ];
 
 function App() {
 
@@ -70,8 +71,26 @@ function App() {
   // env.PUBLIC_URL = env.PUBLIC_URL || "";
   // process.env.PUBLIC_URL 사용으로 제대로 이미지가 불러오지 않을 때 사용
 
-  const [data,dispatch] = useReducer(reducer,dummyData);
-  const dataId = useRef(0);
+  // useEffect(()=>{ // localStorage 연습
+  //   localStorage.setItem("key1",10); // 데이터 입력
+  //   localStorage.setItem("key2","10");
+  //   localStorage.setItem("key3",JSON.stringify({value:10}));
+  //   // localStorage는 문자형으로만 저장하므로 오브젝트 형태로 저장하기 위해서는 JSON 기능 필요.
+  //   const key1 = localStorage.getItem("key1"); // 데이터 가져오기
+  //   const key2 = localStorage.getItem("key2");
+  //   const key3 = JSON.parse(localStorage.getItem("key3"));
+  // },[])
+
+  const [data,dispatch] = useReducer(reducer,[]);
+  useEffect(()=>{
+    const localData = localStorage.getItem('diary');
+    if(localData){
+      const diaryList = JSON.parse(localData).sort((a,b)=>parseInt(b.id)-parseInt(a.id));
+      dataId.current = parseInt(diaryList[0].id) + 1; // 기존 데이터가 있을 경우 시작 id값을 그 다음 값으로 설정
+      dispatch({type:"INIT",data:diaryList}); // 기존 데이터가 있을 경우 초기값으로 설정
+    }
+  },[])
+  const dataId = useRef(0); // 더미데이터가 id를 1,2,3을 가지고 있기 때문에 0부터 시작하면 key값이 중복되는 오류가 발생 → (4)로 시작.
   //CREATE
   const onCreate = (date,content,emotion) =>{
     dispatch({type:"CREATE",data:{

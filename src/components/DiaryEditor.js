@@ -68,7 +68,7 @@ const DiaryEditor = ({isEdit,originData}) => {
     setEmotion(emotion);
   }
   const [date, setDate] = useState(getStringDate(new Date()));
-  const {onCreate,onEdit} = useContext(DiaryDispatchContext);
+  const {onCreate,onEdit,onRemove} = useContext(DiaryDispatchContext);
   const navigate = useNavigate();
   const handleSubmit = () =>{ // 작성 완료를 눌렀을 때 실행되는 함수
     if(content.length<1){
@@ -92,6 +92,14 @@ const DiaryEditor = ({isEdit,originData}) => {
   // 수정 했을 때 수정된 데이터로 새롭게 일기가 나타나고 기존 일기는 그대로 남는 오류가 발생.
   // 코드에 오류가 난건가 싶어서 DiaryEditor과 Edit 부분을 살펴보았지만 문제 없었고, 그러다 문제가 생긴 곳은 onEdit 부분이라는걸 알고 App의 onEdit 부분 확인. type:"EDIT" 이어야하는데 type:"CREATE" 였기 때문에 오류가 생긴 것.
 
+  const handleRemove=()=>{
+    if(window.confirm('해당 일기를 삭제하시겠습니까?')){
+      onRemove(originData.id);
+      navigate('/',{replace:true});
+    }
+  }
+
+
   useEffect(() => {
     if (isEdit) {
       setDate(getStringDate(new Date(parseInt(originData.date))));
@@ -106,6 +114,11 @@ const DiaryEditor = ({isEdit,originData}) => {
         headText={isEdit ? "일기 수정하기" : "새 일기 쓰기"}
         leftChild={
           <MyButton text={"< 뒤로가기"} onClick={()=>navigate(-1)}/>
+        }
+        rightChild={
+          isEdit && (
+            <MyButton text={"삭제하기"} type={"negative"} onClick={handleRemove}/>
+          )
         }
       />
       <div>
