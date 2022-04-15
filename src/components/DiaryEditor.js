@@ -8,53 +8,57 @@ import MyButton from './MyButton';
 import EmotionItem from './EmotionItem';
 import { DiaryDispatchContext } from './../App';
 
+import { getStringDate } from './../util/date';
+import { emotionList } from '../util/emotion';
+
 const env = process.env;
 env.PUBLIC_URL = env.PUBLIC_URL || "";
 
-const emotionList = [
-  {
-    emotion_id:1,
-    emotion_img: process.env.PUBLIC_URL + `/assets/emotion1.png`,
-    emotion_descript: "매우 좋음"
-  },
-  {
-    emotion_id:2,
-    emotion_img: process.env.PUBLIC_URL + `/assets/emotion2.png`,
-    emotion_descript: "좋음"
-  },
-  {
-    emotion_id:3,
-    emotion_img: process.env.PUBLIC_URL + `/assets/emotion3.png`,
-    emotion_descript: "평범함"
-  },
-  {
-    emotion_id:4,
-    emotion_img: process.env.PUBLIC_URL + `/assets/emotion4.png`,
-    emotion_descript: "나쁨"
-  },
-  {
-    emotion_id:5,
-    emotion_img: process.env.PUBLIC_URL + `/assets/emotion5.png`,
-    emotion_descript: "매우 나쁨"
-  }
-]
+// const emotionList = [
+//   {
+//     emotion_id:1,
+//     emotion_img: process.env.PUBLIC_URL + `/assets/emotion1.png`,
+//     emotion_descript: "매우 좋음"
+//   },
+//   {
+//     emotion_id:2,
+//     emotion_img: process.env.PUBLIC_URL + `/assets/emotion2.png`,
+//     emotion_descript: "좋음"
+//   },
+//   {
+//     emotion_id:3,
+//     emotion_img: process.env.PUBLIC_URL + `/assets/emotion3.png`,
+//     emotion_descript: "평범함"
+//   },
+//   {
+//     emotion_id:4,
+//     emotion_img: process.env.PUBLIC_URL + `/assets/emotion4.png`,
+//     emotion_descript: "나쁨"
+//   },
+//   {
+//     emotion_id:5,
+//     emotion_img: process.env.PUBLIC_URL + `/assets/emotion5.png`,
+//     emotion_descript: "매우 나쁨"
+//   }
+// ] // Diary에서도 사용되므로 emotion.js로 이동, import로 사용.
 
-export const getStringDate = (date) =>{
-  // return date.toISOString().slice(0, 10);
-  // 2022-04-14 형식으로 나타내기 위한 함수
-  // toISOString : ISO 형식의 문자열(YYYY-MM-DDTHH:mm:ss.sssZ)을 반환하는 메소드
-  // → 세계별 시간대 차이가 있기 때문에 적절하지 못함
-  let year = date.getFullYear();
-  let month = date.getMonth()+1;
-  let day = date.getDate();
-  if(month<10){
-    month = `0${month}`;
-  }
-  if(day<10){
-    day=`0${day}`;
-  } // 나중에 노마드코더에서 배운 방식으로 변경해보기
-  return `${year}-${month}-${day}`;
-};
+// export const getStringDate = (date) =>{
+//   // return date.toISOString().slice(0, 10);
+//   // 2022-04-14 형식으로 나타내기 위한 함수
+//   // toISOString : ISO 형식의 문자열(YYYY-MM-DDTHH:mm:ss.sssZ)을 반환하는 메소드
+//   // → 세계별 시간대 차이가 있기 때문에 적절하지 못함
+//   let year = date.getFullYear();
+//   let month = date.getMonth()+1;
+//   let day = date.getDate();
+//   if(month<10){
+//     month = `0${month}`;
+//   }
+//   if(day<10){
+//     day=`0${day}`;
+//   } // 나중에 노마드코더에서 배운 방식으로 변경해보기
+//   return `${year}-${month}-${day}`;
+// };
+// Diary에서도 사용. 중복코드가 되기 때문에 date.js로 옮기고 import해옴.
 
 const DiaryEditor = ({isEdit,originData}) => {
   const contentRef = useRef(); // 일기 내용이 비어있을 경우 포커스 용도
