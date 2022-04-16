@@ -1,6 +1,6 @@
 // New 와 Edit 의 구성이 비슷하기 때문에 중복되는 부분을 따로 제작.
 
-import { useState,useRef,useContext,useEffect } from 'react';
+import { useState,useRef,useContext,useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import MyHeader from './Myheader';
@@ -64,9 +64,9 @@ const DiaryEditor = ({isEdit,originData}) => {
   const contentRef = useRef(); // 일기 내용이 비어있을 경우 포커스 용도
   const [content,setContent] = useState(""); // 일기 내용 저장
   const [emotion,setEmotion] = useState(3); // 감정 선택 저장
-  const handleClickEmote = (emotion) => {
+  const handleClickEmote = useCallback((emotion) => {
     setEmotion(emotion);
-  }
+  },[]); // EmotionItem에서 일어나는 쓸데없는 리렌더링을 방지하기 위해 useCallback 사용.
   const [date, setDate] = useState(getStringDate(new Date()));
   const {onCreate,onEdit,onRemove} = useContext(DiaryDispatchContext);
   const navigate = useNavigate();

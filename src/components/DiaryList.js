@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React,{ useState } from "react";
 import { useNavigate } from "react-router-dom";
 import MyButton from "./MyButton";
 import DiaryItem from "./DiaryItem";
@@ -16,7 +16,8 @@ const filterOptionList = [
 // 좋은 감정, 보통, 안좋은 감정. 보통 파트 추가하기.
 
 
-const ControlMenu = ({value, onChange, optionList}) => { // 필터 기능
+const ControlMenu = React.memo(({value, onChange, optionList}) => { // 필터 기능
+  // onChange : 상태변화함수를 받고 있기 때문에 memo가 제대로 기능.
   return (
     <select className="ControlMenu" value={value} onChange={(e)=>onChange(e.target.value)}>
       {optionList.map((it, idx) => (
@@ -26,7 +27,8 @@ const ControlMenu = ({value, onChange, optionList}) => { // 필터 기능
       ))}
     </select>
   )
-};
+});
+// 연산의 최적화. ex) 월을 변경할 때 아래 버튼은 리렌더링 될 필요가 없기 때문에 수정.(React.memo 추가)
 
 const DiaryList = ({diaryList})=>{
   const navigate = useNavigate();

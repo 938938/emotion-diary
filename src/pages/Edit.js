@@ -19,6 +19,13 @@ const Edit = () =>{
 
   const {id} = useParams();
   const diaryList = useContext(DiaryStateContext);
+
+  useEffect(()=>{
+    const titleElement = document.getElementsByTagName('title')[0];
+    // 페이지 이동시 타이틀을 변경하기 위한 코드. html 문서의 <title>을 가리킴.
+    titleElement.innerHTML = `감정일기장 - ${id}번 일기 수정`;
+  },[])
+
   useEffect(()=>{
     if(diaryList.length>=1){
       const targetDiary = diaryList.find(

@@ -86,9 +86,11 @@ function App() {
     const localData = localStorage.getItem('diary');
     if(localData){
       const diaryList = JSON.parse(localData).sort((a,b)=>parseInt(b.id)-parseInt(a.id));
-      dataId.current = parseInt(diaryList[0].id) + 1; // 기존 데이터가 있을 경우 시작 id값을 그 다음 값으로 설정
-      dispatch({type:"INIT",data:diaryList}); // 기존 데이터가 있을 경우 초기값으로 설정
-    }
+      if(diaryList.length>=1){
+        dataId.current = parseInt(diaryList[0].id) + 1; // 기존 데이터가 있을 경우 시작 id값을 그 다음 값으로 설정
+        dispatch({type:"INIT",data:diaryList}); // 기존 데이터가 있을 경우 초기값으로 설정  
+      }
+    };
   },[])
   const dataId = useRef(0); // 더미데이터가 id를 1,2,3을 가지고 있기 때문에 0부터 시작하면 key값이 중복되는 오류가 발생 → (4)로 시작.
   //CREATE
